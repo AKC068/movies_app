@@ -4,15 +4,17 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
-} from 'sequelize-typescript';
-import { Directors } from '../directors/directors.entity';
-import { Users } from '../users/users.entity';
+} from "sequelize-typescript";
+import { Directors } from "../directors/directors.entity";
+import { Users } from "../users/users.entity";
+import { Wishlist } from "../wishlist/wishlist.entity";
 
 @Table({
-  tableName: 'movies',
+  tableName: "movies",
 })
 export class Movies extends Model {
   @PrimaryKey
@@ -43,17 +45,22 @@ export class Movies extends Model {
   })
   directorId: bigint;
 
-  @BelongsTo(() => Directors)
-  director: Directors;
-
   // many movies input can belongs to a user
 
   @ForeignKey(() => Users)
   @Column({
     allowNull: false,
   })
-  usersId: bigint;
+  userId: bigint;
+
+  // Associations
 
   @BelongsTo(() => Users)
   users: Users;
+
+  @BelongsTo(() => Directors)
+  directors: Directors;
+
+  @HasMany(() => Wishlist)
+  wishlist: Wishlist[];
 }
