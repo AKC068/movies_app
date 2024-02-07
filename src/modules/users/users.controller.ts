@@ -8,16 +8,27 @@ export class UsersController {
 
   @Get()
   async getAllMembers() {
-    const users = await this.userServices.getAllMembers();
-    console.log(typeof users[0].id);
-
-    return users;
+    try {
+      const users = await this.userServices.getAllMembers();
+      console.log(typeof users[0].id);
+      return users;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while fetching all users in controller! \n Error: ${error}`,
+      );
+    }
   }
 
   @Post()
   async registerMember(@Body() createUserDto: CreateUserDto) {
-    const userCreated = await this.userServices.registerMember(createUserDto);
-    return userCreated;
+    try {
+      const userCreated = await this.userServices.registerMember(createUserDto);
+      return userCreated;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while posting all users in controller! \n Error: ${error}`,
+      );
+    }
   }
 
   @Get(':id')

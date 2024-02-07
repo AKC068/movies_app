@@ -1,18 +1,20 @@
 import {
   AutoIncrement,
+  BelongsTo,
   Column,
   DataType,
-  HasMany,
+  ForeignKey,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
 import { Movies } from '../movies/movies.entity';
+import { Users } from '../users/users.entity';
 
 @Table({
-  tableName: 'directors',
+  tableName: 'wishlist',
 })
-export class Directors extends Model {
+export class Wishlist extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column({
@@ -21,20 +23,23 @@ export class Directors extends Model {
   })
   id: bigint;
 
+  @ForeignKey(() => Users)
   @Column({
-    type: DataType.STRING,
     allowNull: false,
   })
-  name: string;
+  userId: bigint;
 
+  @ForeignKey(() => Movies)
   @Column({
-    type: DataType.INTEGER,
     allowNull: false,
   })
-  age: number;
+  movieId: bigint;
 
-  // Associations
+  //   Associations
 
-  @HasMany(() => Movies)
-  movies: Movies[];
+  @BelongsTo(() => Users)
+  users: Users;
+
+  @BelongsTo(() => Movies)
+  movies: Movies;
 }

@@ -7,16 +7,49 @@ export class RedisService {
 
   public async buildConnection() {
     this.connection = new Redis();
-    // return this.connection;
+  }
+
+  public async checkForTheKey(key: string) {
+    try {
+      const getConfirmationForKey = await this.connection.exists(key);
+      return getConfirmationForKey;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while checking for key in redis service! \n Error: ${error}`,
+      );
+    }
   }
 
   public async getItems(key: string) {
-    const getItems = await this.connection.get(key);
-    return getItems;
+    try {
+      const getItems = await this.connection.get(key);
+      return getItems;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while getting from redis service! \n Error: ${error}`,
+      );
+    }
   }
 
-  public async setItems(key: string, value: string) {
-    const setItems = await this.connection.set(key, value, 'EX', 1000);
-    return setItems;
+  public async setItems(key: string, value: string, ttl?: number) {
+    try {
+      const setItems = await this.connection.set(key, value, 'EX', ttl);
+      return setItems;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while setting in redis service! \n Error: ${error}`,
+      );
+    }
+  }
+
+  public async deleteItems(key: string) {
+    try {
+      const deleteItems = await this.connection.del(key);
+      return deleteItems;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while deleting in redis service! \n Error: ${error}`,
+      );
+    }
   }
 }

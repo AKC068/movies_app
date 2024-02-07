@@ -4,9 +4,15 @@ export const RedisProvider = [
   {
     provide: 'REDIS',
     useFactory: async () => {
-      const cacheService = new RedisService();
-      cacheService.buildConnection();
-      return cacheService;
+      try {
+        const cacheService = new RedisService();
+        cacheService.buildConnection();
+        return cacheService;
+      } catch (error) {
+        throw new Error(
+          `Something went wrong while building connection with redis! \n Error: ${error}`,
+        );
+      }
     },
   },
 ];

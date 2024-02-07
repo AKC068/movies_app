@@ -8,6 +8,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { Movies } from '../movies/movies.entity';
+import { Wishlist } from '../wishlist/wishlist.entity';
 
 @Table({
   tableName: 'users',
@@ -39,6 +40,11 @@ export class Users extends Model {
   })
   password: string;
 
+  // Associations
+
   @HasMany(() => Movies)
   movies: Movies[];
+
+  @HasMany(() => Wishlist)
+  wishlist: Wishlist[];
 }

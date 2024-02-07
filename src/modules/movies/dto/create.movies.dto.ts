@@ -3,5 +3,5 @@ export class CreateMoviesDto {
   readonly name: string;
   readonly yearReleased: number;
   readonly directorId: bigint;
-  readonly usersId: bigint;
+  userId: bigint;
 }

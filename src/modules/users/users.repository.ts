@@ -6,19 +6,40 @@ export class UserRepository {
   constructor(@Inject('SEQUELIZE') private database: any) {}
 
   async getAllMembers() {
-    return await this.database.Users.findAll();
+    try {
+      const getAllMembers = await this.database.Users.findAll();
+      return getAllMembers;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while fetching all users in repository! \n Error: ${error}`,
+      );
+    }
   }
 
   async registerMember(createUserDto: CreateUserDto) {
-    const { ...userAttributes } = createUserDto;
-    return await this.database.Users.create(userAttributes);
+    try {
+      const { ...userAttributes } = createUserDto;
+      const registerMember = await this.database.Users.create(userAttributes);
+      return registerMember;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while posting users in repository! \n Error: ${error}`,
+      );
+    }
   }
 
   async getUser(email: string) {
-    return await this.database.Users.findOne({
-      where: {
-        email: email,
-      },
-    });
+    try {
+      const getUser = await this.database.Users.findOne({
+        where: {
+          email: email,
+        },
+      });
+      return getUser;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while fetching user in repository! \n Error: ${error}`,
+      );
+    }
   }
 }

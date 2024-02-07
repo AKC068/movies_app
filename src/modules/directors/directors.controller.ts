@@ -8,11 +8,26 @@ export class DirectorsController {
 
   @Post()
   async registerDirector(@Body() createDirectorDto: CreateDirectorDto) {
-    return await this.directorsService.registerDirector(createDirectorDto);
+    try {
+      const registerDirector =
+        await this.directorsService.registerDirector(createDirectorDto);
+      return registerDirector;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while posting a director in controller! \n Error: ${error}`,
+      );
+    }
   }
 
   @Get()
   async getAllDirectorsId() {
-    return await this.directorsService.getAllDirectorsId();
+    try {
+      const getAllDirectorsId = await this.directorsService.getAllDirectorsId();
+      return getAllDirectorsId;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while fetching all director's id in controller! \n Error: ${error}`,
+      );
+    }
   }
 }

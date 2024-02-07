@@ -12,33 +12,56 @@ export class DirectorsService {
   ) {}
 
   async registerDirector(createDirectorDto: CreateDirectorDto) {
-    return await this.directorRepository.registerDirector(createDirectorDto);
+    try {
+      const registerDirector =
+        await this.directorRepository.registerDirector(createDirectorDto);
+      return registerDirector;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while registering the director! \n Error: ${error}`,
+      );
+    }
   }
 
   async getAllDirectorsId() {
-    return await this.directorRepository.getAllDirectorsId();
+    try {
+      const directorIds = await this.directorRepository.getAllDirectorsId();
+      if (Object.keys(directorIds).length === 0)
+        return `No director registered`;
+      return directorIds;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while fetching all director's Id! \n Error: ${error}`,
+      );
+    }
   }
 
   // getLatestMoviesByDirectorId() gives call to DirectorsRepository to get all the director's id as an array.
 
   async getLatestMoviesByDirectorId(directorId: string) {
-    console.log('calling directors services \n');
-    const directorIdArray = await this.getAllDirectorsId();
+    try {
+      console.log('calling directors services \n');
+      const directorIdArray = await this.getAllDirectorsId();
 
-    console.log(`directorIdArray: ${typeof directorIdArray} \n`);
+      console.log(`directorIdArray: ${typeof directorIdArray} \n`);
 
-    // we are checking it with the params passed that is that directorId is there in database or not.
-    const director = directorIdArray.filter(
-      (director) => director.id === directorId,
-    );
-
-    console.log(`dId: ${director} \n`);
-
-    if (director[0].id !== undefined)
-      // if yes then we are calling MoviesService and calling a fn getMoviesInfoByDirectorsId().
-      return await this.moviesService.getMoviesInfoByDirectorsId(
-        director[0].id,
+      // we are checking it with the params passed that is that directorId is there in database or not.
+      const director = directorIdArray.filter(
+        (director: any) => director.id === directorId,
       );
-    else return `No Director found with the given ${directorId}`;
+
+      console.log(`dId: ${director} \n`);
+
+      if (director[0].id !== undefined) {
+        // if yes then we are calling MoviesService and calling a fn getMoviesInfoByDirectorsId().
+        const directorIdFromDb =
+          await this.moviesService.getMoviesInfoByDirectorsId(director[0].id);
+        return directorIdFromDb;
+      } else return `No Director found with the given ${directorId}`;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while fetching a latest movie associated with a director in director service! \n Error: ${error}`,
+      );
+    }
   }
 }

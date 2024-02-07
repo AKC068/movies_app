@@ -7,14 +7,36 @@ export class UsersService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async getAllMembers() {
-    return await this.userRepository.getAllMembers();
+    try {
+      const getAllMembers = await this.userRepository.getAllMembers();
+      return getAllMembers;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while fetching all users in services! \n Error: ${error}`,
+      );
+    }
   }
 
   async registerMember(createUserDto: CreateUserDto) {
-    return await this.userRepository.registerMember(createUserDto);
+    try {
+      const registerMember =
+        await this.userRepository.registerMember(createUserDto);
+      return registerMember;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while posting users in services! \n Error: ${error}`,
+      );
+    }
   }
 
   async getUser(email: string) {
-    return await this.userRepository.getUser(email);
+    try {
+      const getUser = await this.userRepository.getUser(email);
+      return getUser;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while fetching a user in services! \n Error: ${error}`,
+      );
+    }
   }
 }
