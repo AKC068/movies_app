@@ -1,9 +1,9 @@
-import { CreateUserDto } from './dto/create.users.dto';
-import { Inject, Injectable } from '@nestjs/common';
+import { CreateUserDto } from "./dto/create.users.dto";
+import { Inject, Injectable } from "@nestjs/common";
 
 @Injectable()
 export class UserRepository {
-  constructor(@Inject('SEQUELIZE') private database: any) {}
+  constructor(@Inject("SEQUELIZE") private database: any) {}
 
   async getAllMembers() {
     try {

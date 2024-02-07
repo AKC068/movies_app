@@ -1,24 +1,30 @@
-import { AuthGuard } from '../auth/auth.guard';
-import { CreateWishlistDto } from './dto/create.wishlist.dto';
-import { WishlistService } from './wishlist.service';
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from "../auth/auth.guard";
+import { CreateWishlistDto } from "./dto/create.wishlist.dto";
+import { WishlistService } from "./wishlist.service";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from "@nestjs/common";
 
-@Controller('wishlist')
+@Controller("wishlist")
 export class WishlistController {
   constructor(private readonly wishlistService: WishlistService) {}
 
   @UseGuards(AuthGuard)
   @Post()
   async saveMoviesToWishlist(
-    @Body() createWishlistDto: CreateWishlistDto[],
+    @Body() createWishlistDto: CreateWishlistDto,
     @Req() req: any,
   ): Promise<any> {
     try {
       console.log(req.user);
-      const allAttributes = createWishlistDto.map((prop) => {
-        console.log(prop);
-        return { ...prop, userId: req.user.id };
-      });
+      const allAttributes = { ...createWishlistDto, userId: req.user.id };
       console.log(allAttributes);
       const saveMoviesToWishlist =
         this.wishlistService.saveMoviesToWishlist(allAttributes);
@@ -41,6 +47,26 @@ export class WishlistController {
     } catch (error) {
       throw new Error(
         `Something went wrong while getting moviesId from wishlist in controller! \n Error: ${error}`,
+      );
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete(":id")
+  async removeMoviesIdFromWishlist(
+    @Req() req: any,
+    @Param("id") movieId: string,
+  ) {
+    try {
+      const getConfirmation =
+        await this.wishlistService.removeMoviesIdFromWishlist(
+          req.user.id,
+          movieId,
+        );
+      return getConfirmation;
+    } catch (error) {
+      throw new Error(
+        `Something went wrong while removing moviesId from wishlist in controller! \n Error: ${error}`,
       );
     }
   }

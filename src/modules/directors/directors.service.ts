@@ -1,7 +1,7 @@
-import { CreateDirectorDto } from './dto/create.directors.dto';
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
-import { DirectorsRepository } from './directors.repository';
-import { MoviesService } from '../movies/movies.service';
+import { CreateDirectorDto } from "./dto/create.directors.dto";
+import { Inject, Injectable, forwardRef } from "@nestjs/common";
+import { DirectorsRepository } from "./directors.repository";
+import { MoviesService } from "../movies/movies.service";
 
 @Injectable()
 export class DirectorsService {
@@ -40,7 +40,7 @@ export class DirectorsService {
 
   async getLatestMoviesByDirectorId(directorId: string) {
     try {
-      console.log('calling directors services \n');
+      console.log("calling directors services \n");
       const directorIdArray = await this.getAllDirectorsId();
 
       console.log(`directorIdArray: ${typeof directorIdArray} \n`);

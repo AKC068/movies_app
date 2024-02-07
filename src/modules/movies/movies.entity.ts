@@ -8,13 +8,13 @@ import {
   Model,
   PrimaryKey,
   Table,
-} from 'sequelize-typescript';
-import { Directors } from '../directors/directors.entity';
-import { Users } from '../users/users.entity';
-import { Wishlist } from '../wishlist/wishlist.entity';
+} from "sequelize-typescript";
+import { Directors } from "../directors/directors.entity";
+import { Users } from "../users/users.entity";
+import { Wishlist } from "../wishlist/wishlist.entity";
 
 @Table({
-  tableName: 'movies',
+  tableName: "movies",
 })
 export class Movies extends Model {
   @PrimaryKey

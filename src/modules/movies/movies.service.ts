@@ -1,8 +1,8 @@
-import { CreateMoviesDto } from './dto/create.movies.dto';
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
-import { MoviesRepository } from './movies.repository';
-import { DirectorsService } from '../directors/directors.service';
-import { RedisService } from '../redis/redis.service';
+import { CreateMoviesDto } from "./dto/create.movies.dto";
+import { Inject, Injectable, forwardRef } from "@nestjs/common";
+import { MoviesRepository } from "./movies.repository";
+import { DirectorsService } from "../directors/directors.service";
+import { RedisService } from "../redis/redis.service";
 
 @Injectable()
 export class MoviesService {
@@ -10,7 +10,7 @@ export class MoviesService {
     private readonly moviesRepository: MoviesRepository,
     @Inject(forwardRef(() => DirectorsService))
     private readonly directorService: DirectorsService,
-    @Inject('REDIS') private redisService: RedisService,
+    @Inject("REDIS") private redisService: RedisService,
   ) {}
 
   async getAllMovies(id: string) {
@@ -88,7 +88,7 @@ export class MoviesService {
 
   async getMoviesInfoByDirectorsId(directorId: string) {
     try {
-      console.log('calling movies services \n');
+      console.log("calling movies services \n");
       const movies =
         await this.moviesRepository.getMoviesInfoByDirectorsId(directorId);
 

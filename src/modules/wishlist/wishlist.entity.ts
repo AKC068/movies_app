@@ -7,12 +7,12 @@ import {
   Model,
   PrimaryKey,
   Table,
-} from 'sequelize-typescript';
-import { Movies } from '../movies/movies.entity';
-import { Users } from '../users/users.entity';
+} from "sequelize-typescript";
+import { Movies } from "../movies/movies.entity";
+import { Users } from "../users/users.entity";
 
 @Table({
-  tableName: 'wishlist',
+  tableName: "wishlist",
 })
 export class Wishlist extends Model {
   @PrimaryKey

@@ -1,8 +1,8 @@
-import { DirectorsService } from './directors.service';
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { CreateDirectorDto } from './dto/create.directors.dto';
+import { DirectorsService } from "./directors.service";
+import { Body, Controller, Get, Post } from "@nestjs/common";
+import { CreateDirectorDto } from "./dto/create.directors.dto";
 
-@Controller('directors')
+@Controller("directors")
 export class DirectorsController {
   constructor(private readonly directorsService: DirectorsService) {}
 

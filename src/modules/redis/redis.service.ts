@@ -1,5 +1,5 @@
-import { Redis } from 'ioredis';
-import { Injectable } from '@nestjs/common';
+import { Redis } from "ioredis";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class RedisService {
@@ -33,7 +33,7 @@ export class RedisService {
 
   public async setItems(key: string, value: string, ttl?: number) {
     try {
-      const setItems = await this.connection.set(key, value, 'EX', ttl);
+      const setItems = await this.connection.set(key, value, "EX", ttl);
       return setItems;
     } catch (error) {
       throw new Error(

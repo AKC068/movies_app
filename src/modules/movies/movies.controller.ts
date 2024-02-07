@@ -7,12 +7,12 @@ import {
   Post,
   Req,
   UseGuards,
-} from '@nestjs/common';
-import { CreateMoviesDto } from './dto/create.movies.dto';
-import { MoviesService } from './movies.service';
-import { AuthGuard } from '../auth/auth.guard';
+} from "@nestjs/common";
+import { CreateMoviesDto } from "./dto/create.movies.dto";
+import { MoviesService } from "./movies.service";
+import { AuthGuard } from "../auth/auth.guard";
 
-@Controller('movies')
+@Controller("movies")
 export class MoviesController {
   constructor(private readonly moviesServices: MoviesService) {}
 
@@ -39,7 +39,7 @@ export class MoviesController {
     try {
       console.log(req.user);
       const allAttributes = { ...createMoviesDto, userId: req.user.id };
-      console.log('All attributes:', allAttributes);
+      console.log("All attributes:", allAttributes);
       const movieCreated =
         await this.moviesServices.registerMovie(allAttributes);
       return movieCreated;
@@ -50,8 +50,8 @@ export class MoviesController {
     }
   }
 
-  @Delete(':id')
-  async deleteMovieById(@Param('id') id: string) {
+  @Delete(":id")
+  async deleteMovieById(@Param("id") id: string) {
     try {
       console.log(`movie id ${id}`);
       const deleteMovieById = await this.moviesServices.deleteMovieById(id);
@@ -65,9 +65,9 @@ export class MoviesController {
 
   // getLatestMoviesByDirectorId() function is invoked when this API get hits
 
-  @Get(':directorId')
+  @Get(":directorId")
   async getLatestMoviesByDirectorId(
-    @Param('directorId') directorId: string,
+    @Param("directorId") directorId: string,
   ): Promise<any> {
     try {
       console.log(`\n director id: ${directorId}`);

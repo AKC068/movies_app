@@ -1,11 +1,11 @@
-import { JwtService } from '@nestjs/jwt';
+import { JwtService } from "@nestjs/jwt";
 import {
   CanActivate,
   ExecutionContext,
   Injectable,
   UnauthorizedException,
-} from '@nestjs/common';
-import { extractTokenFromHeader } from './auth.utils';
+} from "@nestjs/common";
+import { extractTokenFromHeader } from "./auth.utils";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -17,14 +17,14 @@ export class AuthGuard implements CanActivate {
       const token = extractTokenFromHeader(request);
 
       if (!token) {
-        throw new Error('Session expired. Please login again !');
+        throw new Error("Session expired. Please login again !");
       }
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: 'movie_app',
+        secret: "movie_app",
       });
 
       console.log(payload);
-      
+
       request.user = payload;
       return true;
     } catch (error) {

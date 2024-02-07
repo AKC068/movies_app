@@ -1,8 +1,8 @@
-import { RedisService } from './redis.service';
+import { RedisService } from "./redis.service";
 
 export const RedisProvider = [
   {
-    provide: 'REDIS',
+    provide: "REDIS",
     useFactory: async () => {
       try {
         const cacheService = new RedisService();

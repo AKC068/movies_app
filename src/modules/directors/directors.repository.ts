@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CreateDirectorDto } from './dto/create.directors.dto';
+import { Inject, Injectable } from "@nestjs/common";
+import { CreateDirectorDto } from "./dto/create.directors.dto";
 
 @Injectable()
 export class DirectorsRepository {
-  constructor(@Inject('SEQUELIZE') private database: any) {}
+  constructor(@Inject("SEQUELIZE") private database: any) {}
 
   async registerDirector(createDirectorDto: CreateDirectorDto) {
     try {
@@ -20,7 +20,7 @@ export class DirectorsRepository {
   async getAllDirectorsId() {
     try {
       const getAllDirectorsId = await this.database.Directors.findAll({
-        attributes: ['id'],
+        attributes: ["id"],
       });
       return getAllDirectorsId;
     } catch (error) {

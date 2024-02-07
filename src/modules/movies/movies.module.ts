@@ -1,11 +1,11 @@
-import { AuthModule } from './../auth/auth.module';
-import { Module, forwardRef } from '@nestjs/common';
-import { DatabaseModule } from 'src/core/database/database.module';
-import { MoviesRepository } from './movies.repository';
-import { MoviesService } from './movies.service';
-import { MoviesController } from './movies.controller';
-import { DirectorsModule } from '../directors/directors.module';
-import { RedisModule } from '../redis/redis.module';
+import { AuthModule } from "./../auth/auth.module";
+import { Module, forwardRef } from "@nestjs/common";
+import { DatabaseModule } from "src/core/database/database.module";
+import { MoviesRepository } from "./movies.repository";
+import { MoviesService } from "./movies.service";
+import { MoviesController } from "./movies.controller";
+import { DirectorsModule } from "../directors/directors.module";
+import { RedisModule } from "../redis/redis.module";
 
 @Module({
   imports: [

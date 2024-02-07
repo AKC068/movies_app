@@ -6,11 +6,11 @@ import {
   Model,
   PrimaryKey,
   Table,
-} from 'sequelize-typescript';
-import { Movies } from '../movies/movies.entity';
+} from "sequelize-typescript";
+import { Movies } from "../movies/movies.entity";
 
 @Table({
-  tableName: 'directors',
+  tableName: "directors",
 })
 export class Directors extends Model {
   @PrimaryKey

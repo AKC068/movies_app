@@ -1,15 +1,15 @@
 // import { Request } from 'express';
-import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service';
-import { Inject, Injectable } from '@nestjs/common';
-import { RedisService } from '../redis/redis.service';
+import { JwtService } from "@nestjs/jwt";
+import { UsersService } from "../users/users.service";
+import { Inject, Injectable } from "@nestjs/common";
+import { RedisService } from "../redis/redis.service";
 // import { extractTokenFromHeader } from './auth.utils';
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    @Inject('REDIS') private redisService: RedisService,
+    @Inject("REDIS") private redisService: RedisService,
   ) {}
 
   async signIn(email: string, password: string) {
@@ -35,14 +35,14 @@ export class AuthService {
         else {
           const payload = { id: user.id, email: user.email };
           const access_token = await this.jwtService.signAsync(payload, {
-            secret: 'movie_app',
+            secret: "movie_app",
           });
           const settingToken = await this.setJwtToken(
             `ACCESS_TOKEN_USER_${uId}`,
             access_token,
           );
           console.log(`Welcome! ${user?.name}\n`);
-          console.log(settingToken, '\n');
+          console.log(settingToken, "\n");
           return {
             access_token: access_token,
           };
