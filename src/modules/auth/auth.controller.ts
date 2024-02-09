@@ -2,6 +2,7 @@ import { Controller, Post, Res, Req, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { Response } from "express";
 import { LocalAuthGuard } from "./auth.local.guard";
+import { AuthGuard } from "./auth.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -23,14 +24,19 @@ export class AuthController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Post("logout")
   async logOut(@Res({ passthrough: true }) res: Response, @Req() req: any) {
     try {
-      // req.session.destroy();
+      console.log(req.session.passport.user);
+      const clearRedisCache = await this.authService.clearRedisCache(
+        req.session.passport.user.userId,
+      );
+
       req.logout(() => {});
-      // res.clearCookie("connect.sid").send({
-      //   message: "user logged out",
-      // });
+      res.clearCookie("connect.sid").send({
+        message: clearRedisCache,
+      });
     } catch (error) {
       throw new Error(
         `Something went wrong while logging out the user! \n Error: ${error}`,

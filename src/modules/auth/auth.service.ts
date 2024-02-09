@@ -1,8 +1,12 @@
+import { RedisService } from "../redis/redis.service";
 import { UsersService } from "../users/users.service";
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    @Inject("REDIS") private readonly redisService: RedisService,
+  ) {}
 
   async logIn(username: string, password: string) {
     try {
@@ -65,23 +69,38 @@ export class AuthService {
   //   }
   // }
 
-  // async clearRedisCache(id: string) {
-  //   try {
-  //     console.log(`ACCESS_TOKEN_USER_${id}`);
+  async clearRedisCache(id: string) {
+    try {
+      console.log(`id: ${id}`);
 
-  //     const removeToken = await this.delJwtToken(`ACCESS_TOKEN_USER_${id}`);
-  //     const removeMovieAssociatedWithUser = await this.delJwtToken(
-  //       `MOVIES_USER_${id}`,
-  //     );
+      const movieAssociatedWithUserExists =
+        await this.redisService.checkForTheKey(`MOVIES_USER_${id}`);
+      const wishlistAssociatedWithUserExists =
+        await this.redisService.checkForTheKey(`MOVIES_WISHLIST_USER_${id}`);
 
-  //     return {
-  //       removeToken: removeToken,
-  //       removeMovieAssociatedWithUser: removeMovieAssociatedWithUser,
-  //     };
-  //   } catch (error) {
-  //     throw new Error(`${error.message}`);
-  //   }
-  // }
+      let clearMovieAssociatedWithUser: string | number =
+        `nothing in cache as movie`;
+      let clearWishlistAssociatedWithUser: string | number =
+        `nothing in cache as wishlist`;
+
+      if (movieAssociatedWithUserExists)
+        clearMovieAssociatedWithUser = await this.redisService.deleteItems(
+          `MOVIES_USER_${id}`,
+        );
+
+      if (wishlistAssociatedWithUserExists)
+        clearWishlistAssociatedWithUser = await this.redisService.deleteItems(
+          `MOVIES_WISHLIST_USER_${id}`,
+        );
+
+      return {
+        clearMovieAssociatedWithUser: clearMovieAssociatedWithUser,
+        clearWishlistAssociatedWithUser: clearWishlistAssociatedWithUser,
+      };
+    } catch (error) {
+      throw new Error(`${error.message}`);
+    }
+  }
 
   // async setJwtToken(key: string, value: string) {
   //   try {
