@@ -15,19 +15,20 @@ export class MoviesService {
 
   async getAllMovies(id: string) {
     try {
-      let count = parseInt(
-        await this.redisService.getItems(`COUNT_USER_${id}`),
-      );
-      console.log(`count: ${count}`);
-
       let moviesAssociatedWithAUser = [];
-      if (!count) {
-        count = 0;
+      const isThere = await this.redisService.checkForTheKey(
+        `MOVIES_USER_${id}`,
+      );
+
+      console.log(`isThere Movies in cache: ${isThere}`);
+
+      if (!isThere) {
         moviesAssociatedWithAUser =
           await this.moviesRepository.getAllMovies(id);
 
         if (moviesAssociatedWithAUser.length === 0)
           return `No movies associated with this user.`;
+
         const dataAsString = JSON.stringify(moviesAssociatedWithAUser);
         const redisStatusOfMovies = await this.redisService.setItems(
           `MOVIES_USER_${id}`,
@@ -35,14 +36,6 @@ export class MoviesService {
           100,
         );
         console.log(`redisStatusOfMovies: ${redisStatusOfMovies}`);
-
-        count++;
-        const redisStatusOfCount = await this.redisService.setItems(
-          `COUNT_USER_${id}`,
-          `${count}`,
-          100,
-        );
-        console.log(`redisStatusOfCount: ${redisStatusOfCount}`);
       } else {
         const cachedData = await this.redisService.getItems(
           `MOVIES_USER_${id}`,

@@ -3,7 +3,7 @@ import { RedisService } from "./redis.service";
 export const RedisProvider = [
   {
     provide: "REDIS",
-    useFactory: async () => {
+    useFactory: () => {
       try {
         const cacheService = new RedisService();
         cacheService.buildConnection();
@@ -16,3 +16,5 @@ export const RedisProvider = [
     },
   },
 ];
+
+export const RedisConnection = RedisProvider[0].useFactory().getConnection();

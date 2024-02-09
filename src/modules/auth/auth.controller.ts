@@ -1,38 +1,21 @@
-import { Body, Controller, Post, Res, Req, UseGuards } from "@nestjs/common";
-import { SignInAuthDto } from "./dto/signIn.auth.dto";
+import { Controller, Post, Res, Req, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { Response } from "express";
-import { AuthGuard } from "./auth.guard";
+import { LocalAuthGuard } from "./auth.local.guard";
 
 @Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @UseGuards(LocalAuthGuard)
   @Post("login")
-  async signIn(@Body() signInAuthDto: SignInAuthDto, @Res() res: Response) {
+  async signIn(@Res() res: Response, @Req() req: any) {
+    console.log("into login");
     try {
-      const { email, password } = signInAuthDto;
-      const signInObject = await this.authService.signIn(email, password);
-      let access_token: string;
-
-      if (signInObject?.message) {
-        res.send({
-          message: signInObject.message,
-          status: 200,
-        });
-        return signInObject.message;
-      } else if (signInObject?.access_token) {
-        access_token = signInObject.access_token;
-        res
-          .cookie("access_token", access_token, {
-            httpOnly: true,
-            secure: true,
-          })
-          .send({
-            message: "cookies added",
-            status: 200,
-          });
-      }
+      console.log(req.session.passport.user);
+      res.send({
+        message: req.session.passport.user,
+      });
     } catch (error) {
       throw new Error(
         `Something went wrong while signing in the user! \n Error: ${error}`,
@@ -40,23 +23,14 @@ export class AuthController {
     }
   }
 
-  @UseGuards(AuthGuard)
   @Post("logout")
   async logOut(@Res({ passthrough: true }) res: Response, @Req() req: any) {
     try {
-      console.log(req.user);
-      const tokenRemoved = await this.authService.clearRedisCache(req.user.id);
-      console.log(tokenRemoved, "\n");
-
-      res
-        .clearCookie("access_token", {
-          httpOnly: true,
-          secure: true,
-        })
-        .send({
-          message: "cookies removed",
-          status: 200,
-        });
+      // req.session.destroy();
+      req.logout(() => {});
+      // res.clearCookie("connect.sid").send({
+      //   message: "user logged out",
+      // });
     } catch (error) {
       throw new Error(
         `Something went wrong while logging out the user! \n Error: ${error}`,
