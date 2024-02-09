@@ -42,7 +42,7 @@ export class WishlistController {
     try {
       console.log(req.user);
       const getMoviesIdFromWishList =
-        await this.wishlistService.getMoviesIdFromWishlist(req.user.id);
+        await this.wishlistService.getMoviesIdFromWishlist(req.user.userId);
       return getMoviesIdFromWishList;
     } catch (error) {
       throw new Error(
@@ -60,7 +60,7 @@ export class WishlistController {
     try {
       const getConfirmation =
         await this.wishlistService.removeMoviesIdFromWishlist(
-          req.user.id,
+          req.user.userId,
           movieId,
         );
       return getConfirmation;

@@ -32,7 +32,7 @@ export class WishlistService {
         `MOVIES_WISHLIST_USER_${userId}`,
       );
 
-      console.log(`isThere: ${isThere}`);
+      console.log(`isThere Movies in wishlist cache: ${isThere}`);
 
       if (!isThere) {
         const moviesIdFromWishList =
@@ -62,7 +62,6 @@ export class WishlistService {
         const jsonDataForMoviesIdFromWishList = JSON.parse(
           cachedMoviesForWishlist,
         );
-
         console.log(`Getting data from cache \n`);
         getMoviesFromId = jsonDataForMoviesIdFromWishList;
       }

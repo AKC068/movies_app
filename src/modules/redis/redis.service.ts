@@ -5,8 +5,13 @@ import { Injectable } from "@nestjs/common";
 export class RedisService {
   private connection: Redis;
 
-  public async buildConnection() {
+  public buildConnection() {
     this.connection = new Redis();
+  }
+
+  public getConnection() {
+    console.log("redis connection \n");
+    return this.connection;
   }
 
   public async checkForTheKey(key: string) {

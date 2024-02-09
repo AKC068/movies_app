@@ -1,8 +1,8 @@
-import { DatabaseService } from './database.service';
+import { DatabaseService } from "./database.service";
 
 export const DatabaseProvider = [
   {
-    provide: 'SEQUELIZE',
+    provide: "SEQUELIZE",
     useFactory: async () => {
       const sequelize = new DatabaseService();
       const database = await sequelize.connectToDatabase();

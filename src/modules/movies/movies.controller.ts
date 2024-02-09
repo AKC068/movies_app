@@ -21,7 +21,9 @@ export class MoviesController {
   async getAllMovies(@Req() req: any): Promise<any> {
     try {
       console.log(req.user);
-      const getAllMovies = await this.moviesServices.getAllMovies(req.user.id);
+      const getAllMovies = await this.moviesServices.getAllMovies(
+        req.user.userId,
+      );
       return getAllMovies;
     } catch (error) {
       throw new Error(
@@ -38,7 +40,7 @@ export class MoviesController {
   ) {
     try {
       console.log(req.user);
-      const allAttributes = { ...createMoviesDto, userId: req.user.id };
+      const allAttributes = { ...createMoviesDto, userId: req.user.userId };
       console.log("All attributes:", allAttributes);
       const movieCreated =
         await this.moviesServices.registerMovie(allAttributes);

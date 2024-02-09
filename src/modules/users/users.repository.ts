@@ -28,11 +28,11 @@ export class UserRepository {
     }
   }
 
-  async getUser(email: string) {
+  async getUser(username: string) {
     try {
       const getUser = await this.database.Users.findOne({
         where: {
-          email: email,
+          email: username,
         },
       });
       return getUser;
